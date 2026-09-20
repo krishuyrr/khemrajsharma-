@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>पंडित खेम राज शर्मा जी - 3D ज्योतिष एवं समाधान</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Three.js for 3D Graphics -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { background-color: #0c0a1d; color: #ffffff; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; overflow-x: hidden; }
+        #canvas-container { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; pointer-events: none; }
+        .glass-card { background: rgba(26, 22, 53, 0.85); backdrop-filter: blur(12px); border: 1px solid rgba(255, 215, 0, 0.3); }
+        .glow-text { text-shadow: 0 0 15px rgba(234, 179, 8, 0.8); }
+        .pulse-glow { animation: pulseGlow 2s infinite; }
+        @keyframes pulseGlow {
+            0% { box-shadow: 0 0 0 0 rgba(234, 179, 8, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(234, 179, 8, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(234, 179, 8, 0); }
+        }
+        /* 3D Downward Arrow Animation */
+        @keyframes arrow3DMove {
+            0% { transform: translateY(0px) scale(1); filter: drop-shadow(0 0 5px rgba(234,179,8,0.5)); }
+            50% { transform: translateY(10px) scale(1.1); filter: drop-shadow(0 0 15px rgba(234,179,8,0.9)); }
+            100% { transform: translateY(0px) scale(1); filter: drop-shadow(0 0 5px rgba(234,179,8,0.5)); }
+        }
+        .anim-3d-arrow {
+            animation: arrow3DMove 2s infinite ease-in-out;
+        }
+    </style>
+</head>
+<body class="relative min-h-screen">
+
+    <!-- Three.js 3D Background Canvas -->
+    <div id="canvas-container"></div>
+
+    <!-- Navigation Bar -->
+    <nav class="glass-card sticky top-0 z-50 px-6 py-4 flex justify-between items-center shadow-lg">
+        <div class="flex items-center space-x-2">
+            <i class="fa-solid fa-om text-yellow-400 text-2xl animate-pulse"></i>
+            <span class="text-xl font-bold tracking-wider glow-text">पंडित खेम राज शर्मा</span>
+        </div>
+        <div class="hidden md:flex space-x-6 text-sm font-medium">
+            <a href="#services" class="hover:text-yellow-400 transition">समस्या समाधान</a>
+            <a href="#about" class="hover:text-yellow-400 transition">हमारे बारे में</a>
+            <a href="#contact" class="hover:text-yellow-400 transition">संपर्क करें</a>
+        </div>
+        <div>
+            <button onclick="openContactModal()" class="bg-gradient-to-r from-yellow-500 to-amber-600 text-gray-900 px-5 py-2 rounded-full font-bold text-sm shadow-md hover:scale-105 transition">
+                <i class="fa-solid fa-phone-volume mr-2"></i> 94171-10358
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="container mx-auto px-6 pt-12 pb-6 text-center relative min-h-[85vh] flex flex-col justify-between items-center">
+        <div>
+            <div class="inline-block bg-yellow-500/10 border border-yellow-500/40 px-4 py-1.5 rounded-full text-yellow-300 text-sm font-semibold mb-4">
+                ✨ ज्योतिष गुरु और इष्ट कृपा से आपके जीवन की समस्याओं का सटीक समाधान ✨
+            </div>
+            <h1 class="text-4xl md:text-6xl font-extrabold mb-4 glow-text leading-tight">
+                वैदिक ज्योतिष से पाएं अपनी सभी समस्याओं का समाधान
+            </h1>
+            <p class="text-gray-300 max-w-2xl mx-auto mb-8 text-lg">
+                जीवन की सभी बाधाओं से मुक्ति पाने के लिए और जीवन में सुख शांति समृद्धि पाने के लिए जरूर सम्पर्क करें।
+            </p>
+            <div class="flex flex-col sm:flex-row justify-center gap-4 mb-6">
+                <button onclick="openContactModal()" class="bg-yellow-500 hover:bg-yellow-400 text-gray-900 font-bold px-8 py-3.5 rounded-full shadow-lg transition text-lg pulse-glow">
+                    <i class="fa-solid fa-phone mr-2"></i> तुरंत संपर्क करें (Call)
+                </button>
+                <a href="https://wa.me/919417110358?text=नमस्ते%20पंडित%20जी,%20मुझे%20ज्योतिषीय%20परामर्श%20चाहिए।" target="_blank" class="bg-green-600 hover:bg-green-500 text-white font-bold px-8 py-3.5 rounded-full shadow-lg transition text-lg flex items-center justify-center">
+                    <i class="fa-brands fa-whatsapp mr-2 text-xl"></i> WhatsApp चैट
+                </a>
+            </div>
+        </div>
+
+        <!-- 3D Downward Arrow Scroll Indicator -->
+        <div class="w-full pb-2">
+            <a href="#services" class="inline-flex flex-col items-center group cursor-pointer">
+                <div class="w-12 h-12 rounded-full bg-yellow-500/10 border border-yellow-400/50 flex items-center justify-center shadow-[0_0_15px_rgba(234,179,8,0.4)] mb-2 group-hover:bg-yellow-500/20 transition">
+                    <i class="fa-solid fa-arrow-down text-yellow-400 text-2xl anim-3d-arrow"></i>
+                </div>
+                <span class="text-xs tracking-wider text-yellow-300 font-semibold group-hover:text-yellow-400 transition drop-shadow">
+                    👇 सभी समाधान नीचे देखें (Scroll Down)
+                </span>
+            </a>
+        </div>
+    </section>
+
+    <!-- Services / Solutions Section -->
+    <section id="services" class="container mx-auto px-6 py-12 scroll-mt-20">
+        <h2 class="text-3xl font-bold mb-8 text-center glow-text border-b border-purple-800 pb-4">
+            इन सभी समस्याओं का विशेष समाधान
+        </h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <!-- 1 -->
+            <div class="glass-card p-6 rounded-2xl shadow-xl hover:border-yellow-400 hover:scale-105 transition flex flex-col items-center text-center">
+                <div class="w-14 h-14 bg-red-500/20 text-red-400 rounded-full flex items-center justify-center text-2xl mb-4 border border-red-500/30">
+                    <i class="fa-solid fa-heart-pulse"></i>
+                </div>
+                <h3 class="font-bold text-lg mb-2">बीमारियों से छुटकारा</h3>
+                <p class="text-xs text-gray-300">गुप्त व असाध्य रोगों एवं स्वास्थ्य लाभ हेतु अचूक ज्योतिषीय उपाय।</p>
+            </div>
+            <!-- 2 -->
+            <div class="glass-card p-6 rounded-2xl shadow-xl hover:border-yellow-400 hover:scale-105 transition flex flex-col items-center text-center">
+                <div class="w-14 h-14 bg-blue-500/20 text-blue-400 rounded-full flex items-center justify-center text-2xl mb-4 border border-blue-500/30">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                </div>
+                <h3 class="font-bold text-lg mb-2">बच्चों की पढ़ाई में रुकावट</h3>
+                <p class="text-xs text-gray-300">एकाग्रता की कमी और परीक्षा में सफलता प्राप्ति के विशेष उपाय।</p>
+            </div>
+            <!-- 3 -->
+            <div class="glass-card p-6 rounded-2xl shadow-xl hover:border-yellow-400 hover:scale-105 transition flex flex-col items-center text-center">
+                <div class="w-14 h-14 bg-yellow-500/20 text-yellow-400 rounded-full flex items-center justify-center text-2xl mb-4 border border-yellow-500/30">
+                    <i class="fa-solid fa-briefcase"></i>
+                </div>
+                <h3 class="font-bold text-lg mb-2">कारोबार की समस्या</h3>
+                <p class="text-xs text-gray-300">व्यापार में मंदी, घाटा या बार-बार आ रही रुकावटों का निवारण।</p>
+            </div>
+            <!-- 4 -->
+            <div class="glass-card p-6 rounded-2xl shadow-xl hover:border-yellow-400 hover:scale-105 transition flex flex-col items-center text-center">
+                <div class="w-14 h-14 bg-purple-500/20 text-purple-400 rounded-full flex items-center justify-center text-2xl mb-4 border border-purple-500/30">
+                    <i class="fa-solid fa-user-tie"></i>
+                </div>
+                <h3 class="font-bold text-lg mb-2">नौकरी की समस्या</h3>
+                <p class="text-xs text-gray-300">प्रमोशन में देरी, नौकरी छूटना या मनचाही जॉब प्राप्ति के उपाय।</p>
+            </div>
+            <!-- 5 -->
+            <div class="glass-card p-6 rounded-2xl shadow-xl hover:border-yellow-400 hover:scale-105 transition flex flex-col items-center text-center">
+                <div class="w-14 h-14 bg-orange-500/20 text-orange-400 rounded-full flex items-center justify-center text-2xl mb-4 border border-orange-500/30">
+                    <i class="fa-solid fa-ban"></i>
+                </div>
+                <h3 class="font-bold text-lg mb-2">नशे से छुटकारा</h3>
+                <p class="text-xs text-gray-300">बुरी आदतों व नशे की लत से परिवार को बचाने के लिए अचूक समाधान।</p>
+            </div>
+            <!-- 6 -->
+            <div class="glass-card p-6 rounded-2xl shadow-xl hover:border-yellow-400 hover:scale-105 transition flex flex-col items-center text-center">
+                <div class="w-14 h-14 bg-pink-500/20 text-pink-400 rounded-full flex items-center justify-center text-2xl mb-4 border border-pink-500/30">
+                    <i class="fa-solid fa-house-chimney-crack"></i>
+                </div>
+                <h3 class="font-bold text-lg mb-2">पति पत्नी में लड़ाई झगड़ा</h3>
+                <p class="text-xs text-gray-300">वैवाहिक जीवन की दूरियां मिटाने व आपसी प्रेम बढ़ाने हेतु समाधान।</p>
+            </div>
+            <!-- 7 -->
+            <div class="glass-card p-6 rounded-2xl shadow-xl hover:border-yellow-400 hover:scale-105 transition flex flex-col items-center text-center">
+                <div class="w-14 h-14 bg-teal-500/20 text-teal-400 rounded-full flex items-center justify-center text-2xl mb-4 border border-teal-500/30">
+                    <i class="fa-solid fa-rings-wedding"></i>
+                </div>
+                <h3 class="font-bold text-lg mb-2">शादी में रुकावट</h3>
+                <p class="text-xs text-gray-300">विवाह में देरी या मनपसंद रिश्ते में आ रही बाधाओं का समाधान।</p>
+            </div>
+            <!-- 8 -->
+            <div class="glass-card p-6 rounded-2xl shadow-xl hover:border-yellow-400 hover:scale-105 transition flex flex-col items-center text-center">
+                <div class="w-14 h-14 bg-emerald-500/20 text-emerald-400 rounded-full flex items-center justify-center text-2xl mb-4 border border-emerald-500/30">
+                    <i class="fa-solid fa-file-invoice-dollar"></i>
+                </div>
+                <h3 class="font-bold text-lg mb-2">कर्जे से मुक्ति</h3>
+                <p class="text-xs text-gray-300">बेहिसाब कर्ज के बोझ से मुक्ति और धन लाभ के नए मार्ग।</p>
+            </div>
+            <!-- 9 -->
+            <div class="glass-card p-6 rounded-2xl shadow-xl hover:border-yellow-400 hover:scale-105 transition flex flex-col items-center text-center">
+                <div class="w-14 h-14 bg-indigo-500/20 text-indigo-400 rounded-full flex items-center justify-center text-2xl mb-4 border border-indigo-500/30">
+                    <i class="fa-solid fa-hands-holding-child"></i>
+                </div>
+                <h3 class="font-bold text-lg mb-2">पित्र दोष से मुक्ति</h3>
+                <p class="text-xs text-gray-300">पितृ शांति पूजा एवं वंश वृद्धि हेतु ज्योतिषीय उपाय।</p>
+            </div>
+            <!-- 10 -->
+            <div class="glass-card p-6 rounded-2xl shadow-xl hover:border-yellow-400 hover:scale-105 transition flex flex-col items-center text-center">
+                <div class="w-14 h-14 bg-amber-500/20 text-amber-400 rounded-full flex items-center justify-center text-2xl mb-4 border border-amber-500/30">
+                    <i class="fa-solid fa-dragon"></i>
+                </div>
+                <h3 class="font-bold text-lg mb-2">काल सर्प दोष से मुक्ति</h3>
+                <p class="text-xs text-gray-300">काल सर्प योग के दुष्प्रभावों से छुटकारा पाने की सटीक विधि।</p>
+            </div>
+            <!-- 11 -->
+            <div class="glass-card p-6 rounded-2xl shadow-xl hover:border-yellow-400 hover:scale-105 transition flex flex-col items-center text-center sm:col-span-2 md:col-span-2">
+                <div class="w-14 h-14 bg-cyan-500/20 text-cyan-400 rounded-full flex items-center justify-center text-2xl mb-4 border border-cyan-500/30">
+                    <i class="fa-solid fa-star-and-crescent"></i>
+                </div>
+                <h3 class="font-bold text-lg mb-2">ग्रह नक्षत्र दोष शांति</h3>
+                <p class="text-xs text-gray-300">शनि, राहु, केतु व अन्य सभी कमजोर ग्रहों की शांति एवं अनुष्ठान।</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Astrologer Section -->
+    <section id="about" class="container mx-auto px-6 py-12 scroll-mt-20">
+        <div class="glass-card p-8 md:p-12 rounded-3xl shadow-2xl border border-yellow-500/40 flex flex-col md:flex-row items-center gap-8">
+            <div class="w-48 h-48 rounded-full overflow-hidden border-4 border-yellow-400 shadow-xl flex-shrink-0 bg-purple-900 flex items-center justify-center">
+                <i class="fa-solid fa-user-graduate text-8xl text-yellow-400"></i>
+            </div>
+            <div class="text-center md:text-left">
+                <h3 class="text-3xl font-extrabold text-yellow-400 mb-2">पंडित खेम राज शर्मा जी</h3>
+                <p class="text-sm text-yellow-200 mb-4 font-semibold">वरिष्ठ वैदिक ज्योतिषी एवं संकट मोचन विशेषज्ञ</p>
+                <p class="text-gray-300 text-sm leading-relaxed mb-6">
+                    एवं इसी तरह की अनेक प्रकार की जीवन की सभी बाधाओं से मुक्ति पाने के लिए और जीवन में सुख शांति समृद्धि पाने के लिए जरूर सम्पर्क करें। वर्षों के अनुभव और वैदिक ज्ञान के माध्यम से आपकी हर समस्या का गुप्त और सटीक समाधान किया जाता है।
+                </p>
+                <button onclick="openContactModal()" class="bg-yellow-500 hover:bg-yellow-400 text-gray-900 font-bold px-6 py-2.5 rounded-full shadow transition">
+                    <i class="fa-solid fa-phone mr-2"></i> अभी बात करें
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Popup Modal -->
+    <div id="contact-modal" class="fixed inset-0 bg-black/80 hidden z-50 flex items-center justify-center p-4">
+        <div class="glass-card w-full max-w-md rounded-2xl p-6 border border-yellow-400 relative text-center">
+            <button onclick="closeContactModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white text-xl"><i class="fa-solid fa-xmark"></i></button>
+            
+            <div class="w-16 h-16 bg-yellow-500/20 text-yellow-400 rounded-full flex items-center justify-center text-3xl mx-auto mb-4 border border-yellow-400">
+                <i class="fa-solid fa-phone-volume"></i>
+            </div>
+            <h3 class="text-2xl font-bold mb-1 text-yellow-400">पंडित खेम राज शर्मा जी</h3>
+            <p class="text-sm text-gray-300 mb-6">संपर्क सूत्र: <span class="font-bold text-white text-lg">94171-10358</span></p>
+
+            <div class="space-y-4">
+                <a href="tel:9417110358" class="w-full bg-yellow-500 hover:bg-yellow-400 text-gray-900 font-bold py-3 rounded-xl flex items-center justify-center text-lg shadow-lg transition">
+                    <i class="fa-solid fa-phone mr-3"></i> सीधा कॉल करें (Direct Call)
+                </a>
+                <a href="https://wa.me/919417110358?text=नमस्ते%20पंडित%20जी,%20मुझे%20अपनी%20समस्या%20के%20लिए%20समाधान%20चाहिए।" target="_blank" class="w-full bg-green-600 hover:bg-green-500 text-white font-bold py-3 rounded-xl flex items-center justify-center text-lg shadow-lg transition">
+                    <i class="fa-brands fa-whatsapp mr-3 text-xl"></i> WhatsApp पर चैट करें
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer id="contact" class="text-center py-8 text-gray-400 text-sm border-t border-purple-900/60 mt-12">
+        <p class="mb-2 font-bold text-yellow-400 text-base">संपर्क सूत्र :- 94171-10358 (पंडित खेम राज शर्मा जी)</p>
+        <p>&copy; 2026 भविष्यवाणी एवं ज्योतिष समाधान | सर्वाधिकार सुरक्षित</p>
+    </footer>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // --- Three.js 3D Background (Celestial Sphere & Stars) ---
+        const container = document.getElementById('canvas-container');
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        container.appendChild(renderer.domElement);
+
+        // Stars creation
+        const starsGeometry = new THREE.BufferGeometry();
+        const starsCount = 1800;
+        const starPositionArray = new Float32Array(starsCount * 3);
+
+        for(let i = 0; i < starsCount * 3; i++) {
+            starPositionArray[i] = (Math.random() - 0.5) * 1000;
+        }
+
+        starsGeometry.setAttribute('position', new THREE.BufferAttribute(starPositionArray, 3));
+        const starsMaterial = new THREE.PointsMaterial({ size: 1.8, color: 0xffd700 });
+        const starField = new THREE.Points(starsGeometry, starsMaterial);
+        scene.add(starField);
+
+        // Central Wireframe Astrological Sphere
+        const sphereGeometry = new THREE.SphereGeometry(18, 32, 16);
+        const sphereMaterial = new THREE.MeshBasicMaterial({ color: 0x9333ea, wireframe: true, transparent: true, opacity: 0.15 });
+        const celestialSphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
+        scene.add(celestialSphere);
+
+        camera.position.z = 50;
+
+        // Animation Loop
+        function animate() {
+            requestAnimationFrame(animate);
+            starField.rotation.y += 0.0005;
+            celestialSphere.rotation.y -= 0.001;
+            celestialSphere.rotation.x += 0.0005;
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        // Resize handler
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        // --- Modal Control Functions ---
+        function openContactModal() {
+            document.getElementById('contact-modal').classList.remove('hidden');
+        }
+
+        function closeContactModal() {
+            document.getElementById('contact-modal').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
